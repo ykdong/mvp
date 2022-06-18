@@ -6,7 +6,7 @@ const App = () => {
   return (
     <>
       <h1>Hello World</h1>
-      <h1>hello from here</h1>
+      <h1>test</h1>
     </>
   )
 };

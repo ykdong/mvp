@@ -11,10 +11,13 @@ import UserHomePage from './components/UserHomePage.jsx';
 import Quote from './components/Quote.jsx';
 import Buy from './components/Buy.jsx';
 import Sell from './components/Sell.jsx';
+import History from './components/History.jsx';
 
 const App = () => {
   const navigate = useNavigate();
+  const [currUserName, setName] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
+  const [initTotal, setInitTotal] = useState(1000);
 
   const handleRegister = (e, username, password, passwordConfirm) => {
     e.preventDefault();
@@ -24,7 +27,13 @@ const App = () => {
       axios.post('/register', {
         userName: username,
         passWord: password
-      }).then((response) => { if (response.status === 201) { setLoggedIn(true); navigate('/userHomePage') } })
+      }).then((response) => { 
+        if (response.status === 201) { 
+          setLoggedIn(true);
+          setName(username);
+          navigate('/userHomePage');
+        } 
+      })
     };
   };
   return (
@@ -39,22 +48,22 @@ const App = () => {
           <div className="collapse navbar-collapse" id="navbar">
             <br></br>
             <ul className="navbar-nav ms-auto mt-2">
-              <Link className="nav-item nav-link" to="/register" name="register" >Register</Link>
-              <Link className="nav-item nav-link" to="/login" name="login" >Log In</Link>
+              <Link className="nav-item nav-link" to="/register" name="register">Register</Link>
+              <Link className="nav-item nav-link" to="/login" name="login">Log In</Link>
             </ul>
           </div>
         </div>
-      </nav> : null}
+      </nav> : <></>}
       <br></br>
       <Routes>
         <Route path='/' element={<Home loggedIn={loggedIn}/>} />
         <Route path='/register' element={<Register handleRegister={handleRegister} />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/userHomePage/*' element={<UserHomePage />} />
+        <Route path='/userHomePage/*' element={<UserHomePage initTotal={initTotal} currUserName={currUserName}/>} />
         <Route path='/quote/*' element={<Quote />} />
-        <Route path='/buy' element={<Buy />} />
-        <Route path='/sell' element={<Sell />} />
-        <Route path='/history' element={<History />} />
+        <Route path='/buy/*' element={<Buy currUserName={currUserName}/>} />
+        <Route path='/sell' element={<Sell currUserName={currUserName}/>} />
+        <Route path='/history' element={<History currUserName={currUserName}/>} />
       </Routes>
     </>
   )

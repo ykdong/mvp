@@ -30,13 +30,13 @@ const CloseButton = styled.span`
   }
 `;
 
-const Quoted = ({data}) => {
+const Quoted = ({ data, closeQuoted }) => {
   return (
     <Overlay>
       {data ? 
         <>
           <FormContainer>
-            <CloseButton>&times;</CloseButton>
+            <CloseButton onClick={(e)=>closeQuoted(e)}>&times;</CloseButton>
             <h3>Quote Summary</h3>
             <div>Name: {data.companyName}</div>
             <div>Symbol: {data.symbol}</div>
@@ -46,7 +46,7 @@ const Quoted = ({data}) => {
         : 
         <>
           <FormContainer>
-            <CloseButton>&times;</CloseButton>
+            <CloseButton onClick={(e)=>closeQuoted(e)}>&times;</CloseButton>
             <h1>Invalid Symbol</h1>
           </FormContainer>
         </> 

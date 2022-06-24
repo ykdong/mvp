@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { Route, Routes, Link } from "react-router-dom";
 import axios from 'axios';
 import Quoted from './Quoted.jsx';
+import Login from './Login.jsx';
 import Buy from './Buy.jsx';
 import Sell from './Sell.jsx';
-import Login from './Login.jsx';
+import History from './History.jsx';
 import { TOKEN } from '../../config.js'; 
 
 
-const Quote = () => {
+const Quote = ({currUserName}) => {
   const [userInput, setUserInput] = useState('');
   const [quotedResult, setQuotedResult] = useState({});
   const [showTable, setShowTable] = useState(false);
@@ -19,13 +20,14 @@ const Quote = () => {
   const handleQuote = (e) => {
     e.preventDefault();
     if (userInput === '') { window.alert('Please type in the symbol to quote')}
-    else (
+    else {
       axios
       .get(`https://cloud.iexapis.com/stable/stock/${userInput}/quote?token=${TOKEN}`)
-      .then((result) => {setQuotedResult(result.data); setShowTable(true); console.log(result.data)})
+      .then((result) => {setQuotedResult(result.data); setShowTable(true)})
       .catch((err)=> {setQuotedResult(null); setShowTable(true)})
-    )
+    }
   }
+  const closeQuoted = (e) => { e.preventDefault(); setShowTable(false) };
   return (
     <>
       <nav className="bg-light border navbar navbar-expand-md navbar-light">
@@ -51,11 +53,11 @@ const Quote = () => {
       <br></br>
       <form>
         <div className="mb-3">
-            <input autoComplete="off" autoFocus className="form-control mx-auto w-auto" id="symbol" name="symbol" placeholder="Symbol" type="text" onChange={(e)=>handleInput(e)}/>
+            <input autoComplete="off" autoFocus className="form-control mx-auto w-auto" id="symbol" name="symbol" placeholder="Symbol" type="text" required onChange={(e)=>handleInput(e)}/>
         </div>
         <button className="btn btn-primary" type="submit" onClick={(e)=>handleQuote(e)}>Quote</button>
       </form>
-      { showTable ? <Quoted data={quotedResult} /> : null }
+      { showTable ? <Quoted data={quotedResult} closeQuoted={closeQuoted}/> : null }
       <Routes>
         <Route path='/login' element={<Login />} />
         <Route path='/quoted' element={<Quoted />} />

@@ -1,6 +1,13 @@
+const model = require('./model.js')
+
 module.exports = {
-  postUser: function (req, res) {
-    res.sendStatus(201);
-    console.log(req.cookie);
+  newUser: function (req, res) {
+    model.newUser(req, res)
+  },
+  getCash: function (req, res) { 
+    model.getCash(req, res) 
+  },
+  buy: function (req, res) {
+    model.buy(req, res)
   }
 }
